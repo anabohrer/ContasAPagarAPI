@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ContasAPagarAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace ContasAPagarAPI
@@ -26,6 +21,9 @@ namespace ContasAPagarAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ContasAPagarContext>(opcoes => opcoes.UseSqlServer
+            (Configuration.GetConnectionString("ContasAPagarContext")));
+
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -33,6 +31,9 @@ namespace ContasAPagarAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Contas A Pagar API", Version = "v1" });
             });
+
+            //services.AddScoped<IContasAPagarRepo, MockContasAPagarRepo>();
+            services.AddScoped<IContasAPagarRepo, ContasAPagarRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
