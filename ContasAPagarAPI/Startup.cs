@@ -1,3 +1,4 @@
+using AutoMapper;
 using ContasAPagarAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace ContasAPagarAPI
 {
@@ -32,7 +34,8 @@ namespace ContasAPagarAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Contas A Pagar API", Version = "v1" });
             });
 
-            //services.AddScoped<IContasAPagarRepo, MockContasAPagarRepo>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddScoped<IContasAPagarRepo, ContasAPagarRepo>();
         }
 
