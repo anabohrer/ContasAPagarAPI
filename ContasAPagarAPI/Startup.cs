@@ -2,6 +2,7 @@ using AutoMapper;
 using ContasAPagarAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,14 @@ namespace ContasAPagarAPI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IContasAPagarRepo, ContasAPagarRepo>();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

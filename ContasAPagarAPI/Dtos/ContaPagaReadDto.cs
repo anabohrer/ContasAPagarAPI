@@ -2,6 +2,7 @@
 {
     public class ContaPagaReadDto
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string ValorOriginal { get; set; }
         public string DataVencimento { get; set; }
