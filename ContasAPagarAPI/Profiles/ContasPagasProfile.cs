@@ -9,11 +9,11 @@ namespace ContasAPagarAPI.Profiles
         public ContasPagasProfile()
         {
             CreateMap<ContaPaga, ContaPagaReadDto>()
-            .ForMember(d => d.DataPagamento,
+            .ForMember(d => d.DataPagamentoStr,
                 expression => expression.MapFrom(s => s.DataPagamento.ToString("dd/MM/yyyy")))
-            .ForMember(d => d.DataVencimento,
+            .ForMember(d => d.DataVencimentoStr,
                  expression => expression.MapFrom(s => s.DataVencimento.ToString("dd/MM/yyyy")))
-            .ForMember(d => d.ValorOriginal, 
+            .ForMember(d => d.ValorOriginalStr, 
                 expression => expression.MapFrom(s => string.Format("R$ {0:N2}", s.ValorOriginal)))
             .ForMember(d => d.ValorCorrigido,
                 expression => expression.MapFrom(s => string.Format("R$ {0:N2}", s.ValorCorrigido)));

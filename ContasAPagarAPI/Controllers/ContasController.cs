@@ -19,15 +19,15 @@ namespace ContasAPagarAPI.Controllers
             _repositorio = repositorio;
             _mapper = mapper;
         }
-        [HttpGet("{id}", Name = "GetContaCadastrada")]
-        public ActionResult<ContaPagaReadDto> GetContaCadastrada(int id)
+        [HttpGet("{id}", Name = "BuscaContaPaga")]
+        public ActionResult<ContaPagaReadDto> BuscaContaPaga(int id)
         {
             var contaCadastrada = _repositorio.BuscaContaCadastrada(id);
             return Ok(_mapper.Map<ContaPagaReadDto>(contaCadastrada));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ContaPagaReadDto>> GetContasCadastradas()
+        public ActionResult<IEnumerable<ContaPagaReadDto>> BuscaContasPagas()
         {
             var contasCadastradas = _repositorio.BuscaContasCadastradas();
             return Ok(_mapper.Map<IEnumerable<ContaPagaReadDto>>(contasCadastradas));
@@ -40,11 +40,11 @@ namespace ContasAPagarAPI.Controllers
             _repositorio.CriarConta(contaPagaModel);
 
             var contaPagaReadDto = _mapper.Map<ContaPagaReadDto>(contaPagaModel);
-            return CreatedAtRoute(nameof(GetContaCadastrada), new { contaPagaModel.Id }, contaPagaCreateDto);
+            return CreatedAtRoute(nameof(BuscaContaPaga), new { contaPagaModel.Id }, contaPagaCreateDto);
         }
 
         [HttpPut("{id}")]
-        public ActionResult AtualizaConta(int id, ContaPagaUpdateDto contaPagaUpdateDto)
+        public ActionResult AtualizaContaPaga(int id, ContaPagaUpdateDto contaPagaUpdateDto)
         {
             var contaCadastrada = _repositorio.BuscaContaCadastrada(id);
             if (contaCadastrada == null)
@@ -56,7 +56,7 @@ namespace ContasAPagarAPI.Controllers
             return NoContent();
         }
         [HttpDelete("{id}")]
-        public ActionResult DeletaConta(int id)
+        public ActionResult DeletaContaPaga(int id)
         {
             var contaCadastrada = _repositorio.BuscaContaCadastrada(id);
             if (contaCadastrada == null)

@@ -26,7 +26,7 @@ namespace ContasAPagarAPI.Data
 
         public IEnumerable<ContaPaga> BuscaContasCadastradas()
         {
-            return _context.Contas.ToList();
+            return _context.Contas.ToList().OrderBy(x => x.Id);
         }
 
         public void CriarConta(ContaPaga conta)

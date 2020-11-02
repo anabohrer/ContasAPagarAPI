@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace ContasAPagarAPI.Dtos
 {
@@ -8,15 +9,19 @@ namespace ContasAPagarAPI.Dtos
         [Required(ErrorMessage = "Campo nome é obrigatório")]
         [MaxLength(120)]
         public string Nome { get; set; }
+        public string ValorOriginalStr { get; set; }
         [Range(0.1, double.MaxValue, ErrorMessage = "O Valor Original precisa ser maior que zero")]
-        public double ValorOriginal { get; set; }
+        public double ValorOriginal => double.Parse(ValorOriginalStr.Replace(',', '.').Replace("R$", string.Empty).Replace(" ", string.Empty), CultureInfo.InvariantCulture);
+        public string DataVencimentoStr { get; set; }
 
         [Range(typeof(DateTime), "1/1/2015", "31/12/2022",
                  ErrorMessage = "Data de Vencimento precisa ser entre {0} {1:d} e {2:d}")]
-        public DateTime DataVencimento { get; set; }
+        public DateTime DataVencimento => DateTime.Parse(DataVencimentoStr);
+
+        public string DataPagamentoStr { get; set; }
         [Range(typeof(DateTime), "1/1/2015", "31/12/2022",
                 ErrorMessage = "Data de Pagamento precisa ser entre {0} {1:d} e {2:d}")]
-        public DateTime DataPagamento { get; set; }
+        public DateTime DataPagamento => DateTime.Parse(DataPagamentoStr);
 
         public double ValorCorrigido
         {

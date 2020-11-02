@@ -1,14 +1,19 @@
 using AutoMapper;
 using ContasAPagarAPI.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Net;
 
 namespace ContasAPagarAPI
 {
@@ -41,11 +46,14 @@ namespace ContasAPagarAPI
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddJsonOptions(options =>
+                .AddNewtonsoftJson( options =>
                 {
-                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    var resolver = options.SerializerSettings.ContractResolver;
+                    if (resolver != null)
+                        (resolver as DefaultContractResolver).NamingStrategy = null;
                 });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +63,18 @@ namespace ContasAPagarAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseExceptionHandler(appError =>
+            {
+                appError.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "application/json";
 
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject($"ApiException: {contextFeature.Error}{Environment.NewLine} Inner: {(contextFeature.Error.InnerException == null ? string.Empty : contextFeature.Error.InnerException.ToString())}"));
+                });
+            });
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -68,6 +87,10 @@ namespace ContasAPagarAPI
 
             app.UseHttpsRedirection();
 
+            app.UseCors(options => options.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -76,6 +99,7 @@ namespace ContasAPagarAPI
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
