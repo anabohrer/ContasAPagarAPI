@@ -15,7 +15,7 @@ namespace ContasAPagarAPI.Profiles
             .ForMember(d => d.DataVencimentoStr,
                  expression => expression.MapFrom(s => s.DataVencimento.ToString("dd/MM/yyyy")))
             .ForMember(d => d.ValorOriginalStr, 
-                expression => expression.MapFrom(s => string.Format("R$ {0:N2}", s.ValorOriginal)))
+                expression => expression.MapFrom(s => string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", s.ValorOriginal)))
             .ForMember(d => d.ValorCorrigido,
                 expression => expression.MapFrom(s => string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", s.ValorCorrigido)));
             CreateMap<ContaPagaCreateDto, ContaPaga>();

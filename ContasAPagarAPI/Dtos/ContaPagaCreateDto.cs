@@ -11,7 +11,7 @@ namespace ContasAPagarAPI.Dtos
         public string Nome { get; set; }
         public string ValorOriginalStr { get; set; }
         [Range(0.1, double.MaxValue, ErrorMessage = "O Valor Original precisa ser maior que zero")]
-        public double ValorOriginal => double.Parse(ValorOriginalStr.Replace(',', '.').Replace("R$", string.Empty).Replace(" ", string.Empty), CultureInfo.InvariantCulture);
+        public double ValorOriginal => double.Parse(ValorOriginalStr.Replace("R$", string.Empty).Replace(" ", string.Empty), CultureInfo.GetCultureInfo("pt-BR"));
         public string DataVencimentoStr { get; set; }
 
         public DateTime DataVencimento => DateTime.Parse(DataVencimentoStr);
