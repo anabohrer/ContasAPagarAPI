@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ContasAPagarAPI.Models;
 using ContasAPagarAPI.Dtos;
+using System.Globalization;
 
 namespace ContasAPagarAPI.Profiles
 {
@@ -16,7 +17,7 @@ namespace ContasAPagarAPI.Profiles
             .ForMember(d => d.ValorOriginalStr, 
                 expression => expression.MapFrom(s => string.Format("R$ {0:N2}", s.ValorOriginal)))
             .ForMember(d => d.ValorCorrigido,
-                expression => expression.MapFrom(s => string.Format("R$ {0:N2}", s.ValorCorrigido)));
+                expression => expression.MapFrom(s => string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", s.ValorCorrigido)));
             CreateMap<ContaPagaCreateDto, ContaPaga>();
             CreateMap<ContaPagaUpdateDto, ContaPaga>();
         }

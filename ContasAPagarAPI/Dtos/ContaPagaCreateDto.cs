@@ -14,13 +14,9 @@ namespace ContasAPagarAPI.Dtos
         public double ValorOriginal => double.Parse(ValorOriginalStr.Replace(',', '.').Replace("R$", string.Empty).Replace(" ", string.Empty), CultureInfo.InvariantCulture);
         public string DataVencimentoStr { get; set; }
 
-        [Range(typeof(DateTime), "1/1/2015", "31/12/2022",
-                 ErrorMessage = "Data de Vencimento precisa ser entre {0} {1:d} e {2:d}")]
         public DateTime DataVencimento => DateTime.Parse(DataVencimentoStr);
 
         public string DataPagamentoStr { get; set; }
-        [Range(typeof(DateTime), "1/1/2015", "31/12/2022",
-                ErrorMessage = "Data de Pagamento precisa ser entre {0} {1:d} e {2:d}")]
         public DateTime DataPagamento => DateTime.Parse(DataPagamentoStr);
 
         public double ValorCorrigido
