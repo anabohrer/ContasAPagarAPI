@@ -87,7 +87,7 @@ namespace ContasAPagarAPI
 
             app.UseHttpsRedirection();
 
-            app.UseCors(options => options.WithOrigins("http://localhost:4200")
+            app.UseCors(options => options.WithOrigins("http://localhost:4200", "https://contas-a-pagar-app.herokuapp.com")
             .AllowAnyMethod()
             .AllowAnyHeader());
 
@@ -98,6 +98,9 @@ namespace ContasAPagarAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Instalacao}/{id?}");
             });
 
         }
